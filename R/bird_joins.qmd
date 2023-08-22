@@ -142,29 +142,3 @@ Continue in your same .Rmd that you created for Task 1
     ```{r}
 
     ```
-
-## **Task 3: Practice with strings**
-
--   Install the `datapasta` package (if you don't have it already)
-
--   Restart R
-
--   Create a new .Rmd in your `R` folder called `string_practice.Rmd`
-
--   Copy all contents of the html table below to your clipboard:
-
--   Back in your `string_practice.Rmd`, create a new code chunk
-
--   With your cursor in your code chunk, go up to Addins in the top bar of RStudio. From the drop-down menu, choose 'Paste as data frame'. Make sure to add code to store the data frame as `alarm_report`
-
--   Practice working with strings by writing code to update `alarm_report` as follows (these can be separate, or all as part of a piped sequence):
-
-    -   Replace the "Engr" with "Engineering" in the `building` column
-
-    -   Separate the `building` column into two separate columns, `building` and `wing`, separated at the dash
-
-    -   Only keep observations with the word "responded" in the `alarm_message` column
-
-    -   Separate the message *time* from the rest of the message by separating at `--`
-
-    -   Convert the date column to a Date class using `lubridate`
