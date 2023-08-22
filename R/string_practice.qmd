@@ -1,0 +1,73 @@
+---
+title: "string_practice"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+```
+
+## **Task 3: Practice with strings**
+
+-   Install the `datapasta` package (if you don't have it already)
+
+-   Restart R
+
+-   Create a new .Rmd in your `R` folder called `string_practice.Rmd`
+
+-   Copy all contents of the html table below to your clipboard:
+
+```{r}
+alarm_report<- data.frame(
+  stringsAsFactors = FALSE,
+              date = c("2020-03-14", "2020-03-15", "2020-04-10", "2020-04-18"),
+          building = c("Engineering-North",
+                       "Bren Hall","Engineering-South","Engr-North"),
+     alarm_message = c("10:02am – HVAC system down, facilities management alerted",
+                       "8:24am – Elevator North out of service",
+                       "12:41am – Fire alarm, UCSB fire responded and cleared",
+                       "9:58pm – Campus point emergency siren, UCPD responded")
+)
+```
+
+-   Back in your `string_practice.Rmd`, create a new code chunk
+
+-   With your cursor in your code chunk, go up to Addins in the top bar of RStudio. From the drop-down menu, choose 'Paste as data frame'. Make sure to add code to store the data frame as `alarm_report`
+
+-   Practice working with strings by writing code to update `alarm_report` as follows (these can be separate, or all as part of a piped sequence):
+
+    -   Replace the "Engr" with "Engineering" in the `building` column
+
+    ```{r}
+    alarm_report %>% 
+      mutate(name_new = str_replace(building, pattern = "Engr", replacement = "Engineering"))
+    ```
+
+    -   Separate the `building` column into two separate columns, `building` and `wing`, separated at the dash
+
+    ```{r}
+    alarm_report %>% 
+      separate(building,into = c("building","wing"), sep = "-")
+    ```
+
+    -   Only keep observations with the word "responded" in the `alarm_message` column
+
+    ```{r}
+    alarm_report %>% 
+      filter(str_detect(alarm_message, pattern = "responded"))
+    ```
+
+    -   Separate the message *time* from the rest of the message by separating at `--`
+
+    ```{r}
+    alarm_report %>% 
+      separate(alarm_message,into = c("time","alarm_message"), sep = "–")
+    ```
+
+    -   Convert the date column to a Date class using `lubridate`
+
+    ```{r}
+    alarm_report %>% 
+      mutate(date = lubridate::ymd(date))
+    ```

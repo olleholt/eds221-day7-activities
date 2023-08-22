@@ -94,7 +94,7 @@ Continue in your same .Rmd that you created for Task 1
 
 -   Then, create a subset that contains *all observations* in the `birds` dataset, joins the taxonomic, site and survey information to it, and is finally limited to only columns `survey_date`, `common_name`, `park_name`, and `bird_count`. You can decide the order that you want to create this in (e.g. limit the columns first, then join, or the other way around).
 
-    ## STUCK ON THIS
+    ## STUCK ON THIS, resolved?
 
     ```{r}
     # taxalist_subset <- taxalist %>% 
@@ -113,32 +113,49 @@ Continue in your same .Rmd that you created for Task 1
     # #  full_join(birdss_subset,site_subset) %>% 
     #  # full_join(birdss_subset,surveys_subset)
 
-    joined_subset <- full_join(bird_observations,taxalist, by = "species_id") %>% 
-      full_join(bird_observations,sites, by = "site_id") %>% 
-      full_join(bird_observations,surveys, by = "site_id")
+    joined_subset <-bird_observations %>% 
+      full_join(taxalist, by = "species_id") %>% 
+      full_join(sites, by = "site_id") %>% 
+      full_join(surveys, by = "survey_id")
 
+    condensed_joined_subset <- joined_subset %>% 
+      select(common_name,park_name,survey_date,bird_count)
+      
     ```
 
 -   Use `lubridate::month()` to add a new column called `survey_month`, containing only the month number. Then, convert the month number to a factor (again within `mutate()`)
 
     ```{r}
 
+    # urchin_mean_by_month <- urchin_counts %>% 
+    #   mutate(date = lubridate::mdy(date)) %>% 
+    #   mutate(month = lubridate::month(date)) %>% 
+    #   group_by(month) %>% 
+    #   summarize(mean_size = mean(size_mm))
+
+    joined_by_month <- condensed_joined_subset %>% 
+      mutate(survey_month = lubridate::month(survey_date)) %>% 
+      mutate(survey_month = as.factor(survey_month))
     ```
 
 -   Learn a new function on your own! Use `dplyr::relocate()` to move the new `survey_month` column to immediately after the `survey_date` column. You can do this in a separate code chunk, or pipe straight into it from your existing code.
 
     ```{r}
-
+    joined_relocate <- joined_by_month %>% 
+      relocate(before = survey_month, after = survey_date)
     ```
 
 -   Find the total number of birds observed by *park* and *month* (i.e., you'll `group_by(park_name, survey_month)`)
 
     ```{r}
-
+    joined_relocate %>% 
+      group_by(park_name,before) %>% 
+      summarize(n = n())
     ```
 
 -   Filter to only include parks "Lindo", "Orme", "Palomino" and "Sonrisa"
 
     ```{r}
-
+    joined_relocate %>% 
+      filter(park_name = "Lindo"|park_name = "Orme"|park_name = "Palomino"|park_name = "Sonrisa")
     ```
