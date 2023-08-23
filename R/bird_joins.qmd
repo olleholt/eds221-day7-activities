@@ -157,5 +157,5 @@ Continue in your same .Rmd that you created for Task 1
 
     ```{r}
     joined_relocate %>% 
-      filter(park_name = "Lindo"|park_name = "Orme"|park_name = "Palomino"|park_name = "Sonrisa")
+      filter(park_name == "Lindo"|park_name == "Orme"|park_name == "Palomino"|park_name == "Sonrisa")
     ```
